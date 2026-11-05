@@ -39,12 +39,12 @@ app.get("/", (req, res) => {
 
 // // New version: 
 app.post("/signup", (req, res) => {
-  const { name, email, phone } = req.body;
-  if (!name || !email || !phone) {
-    return res.send("Please enter both name, email, and phone.");
+  const { name, email, phone, musician } = req.body;
+  if (!name || !email || !phone || !musician) {
+    return res.send("Please enter name, email, phone, and musician.");
   }
 
-  const newUser = { id: Date.now(), name, email, phone };
+  const newUser = { id: Date.now(), name, email, phone, musician };
   users.push(newUser);
   fs.writeFileSync(DATA_FILE, JSON.stringify(users, null, 2));
 
@@ -65,6 +65,7 @@ app.get("/users", (req, res) => {
         <td>${u.id}</td>
         <td>${u.name}</td>
         <td>${u.email}</td>
+        <td>${u.musician}</td>
         <td>
           <form action="/delete/${u.id}" method="POST" style="display:inline;">
             <button type="submit">Delete</button>
@@ -86,7 +87,7 @@ app.get("/users", (req, res) => {
   let html = `
   <h2>Registered Users</h2>
   <table border="1" cellpadding="5">
-    <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Action</th></tr>
+    <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Musician</th><th>Action</th></tr>
   `;
 
   users.forEach(u => {
